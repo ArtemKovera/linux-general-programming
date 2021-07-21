@@ -15,7 +15,7 @@ int main(int argc, char **argv)
         exit(EXIT_FAILURE);   
     }
 
-    int fd = open(argv[1], O_CREAT | O_WRONLY, S_IRWXU | S_IRWXG | S_IROTH);
+    int fd = open(argv[1], O_CREAT | O_WRONLY | O_TRUNC, S_IRWXU | S_IRWXG | S_IROTH);
 
     if(fd < 0)
     {
