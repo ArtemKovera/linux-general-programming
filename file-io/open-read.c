@@ -26,16 +26,25 @@ int main(int argc, char **argv)
     }
 
     char buf [LEN] = {'\0'};
-    size_t numberOfBytesToRead = atoi(argv[2]);
+    size_t bytesToRead = atoi(argv[2]);
+    ssize_t bytesRead;
+    size_t index = 0;
 
-    ssize_t bytesRead = read(fd, buf, numberOfBytesToRead);
-
-    if(bytesRead < 0)
+    while (bytesToRead != 0 && (bytesRead = read(fd, &buf[index], bytesToRead)) != 0)
     {
-        fprintf(stderr, "Read Error: %s\n", strerror(errno));
-        exit(EXIT_FAILURE);        
+        if(bytesRead == -1)
+        {
+            if(errno == EINTR)
+                continue;
+            
+            perror("read");
+            break;
+        }
+        
+        bytesToRead -= bytesRead;
+        index += bytesRead;
     }
-    
+
     printf("The read characters from the file \"%s\":\n%s\n", argv[1], buf);
     
     return 0;
