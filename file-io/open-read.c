@@ -46,6 +46,9 @@ int main(int argc, char **argv)
     }
 
     printf("The read characters from the file \"%s\":\n%s\n", argv[1], buf);
+
+    if (close (fd) == -1)
+        perror ("close()");
     
     return 0;
 }
