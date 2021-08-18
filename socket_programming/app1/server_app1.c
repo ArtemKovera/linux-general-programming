@@ -14,6 +14,8 @@
 
 #define MAX_NUMBER_CLIENTS 5
 #define BUFF_SIZE 256
+#define PORT 34543
+
 
 int main()
 {   
@@ -21,7 +23,6 @@ int main()
     
     //socket IPv4/TCP
     int server = socket(AF_INET, SOCK_STREAM, 0);
-    
     if(server == -1)
     {
         perror("socket");
@@ -30,7 +31,7 @@ int main()
     
     struct sockaddr_in address = {0};
     address.sin_family = AF_INET;
-    address.sin_port = htons(34543);
+    address.sin_port = htons(PORT);
 
     rflag = bind(server, (struct sockaddr *) &address, sizeof(address));
     if(rflag == -1)
@@ -74,7 +75,12 @@ int main()
     {
         perror("write to client error");
         exit(EXIT_FAILURE);
-    }    
+    }
+
+    sleep(15);
+
+    close(fd);
+    close(server);    
 
     return 0;
 }
