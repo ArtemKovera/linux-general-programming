@@ -13,7 +13,7 @@
 
 int main()
 {
-    puts("This is a named pipe server");
+    puts("This is the server");
 
     int status, fd, rbytes;
     char ch;
@@ -23,10 +23,13 @@ int main()
     {   
         if(errno = EEXIST)
         {
-            puts("named pipe already exists, which is fine");
+            puts("this named pipe already exists, which is fine");
         }
-        perror("mkfifo");
-        exit(EXIT_FAILURE);
+        else
+        {
+            perror("mkfifo");
+            exit(EXIT_FAILURE);            
+        }
     }
 
     fd = open(FILE_PIPE, O_RDONLY);         //opening pipe for reading
@@ -35,8 +38,6 @@ int main()
         perror("open");
         exit(EXIT_FAILURE);
     }
-
-    puts("Named pipe is open");
     
     char buffer[BUFF_SIZE] = {0};
     char *pointer = buffer;
@@ -55,16 +56,14 @@ int main()
             exit(EXIT_FAILURE);
         }
         if(rbytes == 0)
-        {
-            puts("EOF occured");
             break;
-        }
-        
+
         pointer++;
     }
 
     puts("The message from the client: ");
     printf("%s\n", buffer);
+    close(fd);
 
     return 0;
 }
