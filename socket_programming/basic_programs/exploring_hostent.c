@@ -2,6 +2,9 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<errno.h>
+#include<arpa/inet.h>
+#include<sys/socket.h>
+#include<netinet/in.h>
 
 int main(int argc, char **argv)
 {
@@ -54,5 +57,17 @@ int main(int argc, char **argv)
     printf("Length: %d bytes\n\n", ht->h_length);
 
 
+    char **addresses = ht->h_addr_list;
+    i = 0;
+    puts("The addresses: ");
+    while(addresses[i])
+    {
+        struct in_addr *addr = (struct in_addr *) addresses[i];
+        printf("%s\n", inet_ntoa(*addr));
+        i++;
+    }
+    if(!i)
+        printf("NO addresses\n\n");
+    
     return 0;
 }
