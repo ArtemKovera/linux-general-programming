@@ -11,10 +11,10 @@
 
 typedef struct
 {
-    int  rioFd;
-    int  rioCnt;
-    char *rioBufPtr;
-    char rioBuf[RIO_BUFSIZE];
+    int  rioFd;                //Descriptor for this internal buffer
+    int  rioCnt;               //Unread bytes in internal buffer
+    char *rioBufPtr;           //Next unread byte in internal buffer
+    char rioBuf[RIO_BUFSIZE];  //Internal buffer
 } rioT;
 
 
@@ -25,12 +25,12 @@ ssize_t rioReadn(int fd, void *userbuf, size_t n);
 ssize_t rioWriten(int fd, void *userbuf, size_t n);
 
 //returns number of bytes transferred, 0 on EOF (rio_readn only), −1 on error
-void rioReadInitb(rioT rp, int fd);
+void rioReadInitb(rioT *rp, int fd);
 
 //returns number of bytes transferred, 0 on EOF (rio_readn only), −1 on error
-ssize_t rioReadLineb(rioT rp, void *usrbuf, size_t maxlen);
+ssize_t rioReadLineb(rioT *rp, void *usrbuf, size_t maxlen);
 
 //returns number of bytes transferred, 0 on EOF (rio_readn only), −1 on error
-ssize_t rioReadnb(rioT rp, void *usrbuf, size_t n);
+ssize_t rioReadnb(rioT *rp, void *usrbuf, size_t n);
 
 #endif
